@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -8,95 +9,253 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;600&display=swap"
         rel="stylesheet">
     <style>
+        /* Menu Hidden by Default */
+        .menu {
+            display: none;
+        }
+
+        .menu.visible {
+            display: block;
+        }
+
+        /* Section Buttons - Liquor & Food */
+        .section-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0 20px;
+            padding: 0 15px;
+        }
+
+        .section-btn {
+            flex: 1;
+            max-width: 300px;
+            padding: 18px 30px;
+            border-radius: 50px;
+            border: none;
+            font-size: 24px;
+            font-weight: 700;
+            font-family: var(--ff-heading);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .section-btn:hover::before {
+            left: 100%;
+        }
+
+        .section-btn.liquor-btn {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: #FFD700;
+            border: 2px solid #FFD700;
+        }
+
+        .section-btn.food-btn {
+            background: linear-gradient(135deg, #2E7D32, #4CAF50);
+            color: #FFFFFF;
+            border: 2px solid #FFA000;
+        }
+
+        .section-btn.active {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-btn.liquor-btn.active {
+            box-shadow: 0 10px 30px rgba(210, 105, 30, 0.4);
+        }
+
+        .section-btn.food-btn.active {
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
+        }
+
+        /* Responsive section buttons */
+        @media (max-width: 768px) {
+            .section-buttons {
+                gap: 15px;
+                margin: 20px 0 15px;
+            }
+            
+            .section-btn {
+                padding: 14px 20px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .section-btn {
+                max-width: 100%;
+                width: 100%;
+                padding: 12px 15px;
+                font-size: 18px;
+            }
+        }
 
         /* Tabs Navigation - Category Buttons */
         .tabs-container {
             position: relative;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
-        .tabs-scroll {
+        .tabs-scroll-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 15px;
+            border: 2px solid rgba(212, 175, 55, 0.25);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
+        }
+
+        .tabs-column {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            padding: 8px 0;
-            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .tab {
-            padding: 10px 16px;
-            border-radius: 999px;
+            padding: 12px 16px;
+            border-radius: 12px;
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            border: 1.5px solid rgba(212, 175, 55, 0.2);
             font-size: 14px;
             color: var(--muted);
             cursor: pointer;
-            white-space: nowrap;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
-            margin: 2px;
-        }
-
-        .tabs-container {
             text-align: center;
-        }
-
-        .tab-row {
-            margin-bottom: 10px;
-        }
-
-        .tab {
-            margin: 4px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-break: break-word;
+            line-height: 1.3;
+            width: 100%;
         }
 
         .tab.active {
             background: linear-gradient(90deg, var(--gold1), var(--gold2));
             color: #0b0b0d;
-            border: none;
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.12);
+            border: 1.5px solid var(--gold1);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+            font-weight: 600;
+            transform: translateY(-2px);
         }
 
+        /* Hover effect for better UX */
         .tab:hover {
-            border-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-1px);
+            border-color: var(--gold1);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.15);
         }
 
+        /* Tablet styles */
         @media (min-width: 768px) {
-            .tabs-scroll {
-                justify-content: flex-start;
+            .tabs-scroll-wrapper {
+                padding: 18px;
+                gap: 20px;
             }
+            
+            .tabs-column {
+                gap: 12px;
+            }
+            
             .tab {
-                padding: 12px 20px;
+                padding: 14px 18px;
                 font-size: 15px;
             }
         }
 
+        /* Desktop styles */
         @media (min-width: 1024px) {
+            .tabs-scroll-wrapper {
+                padding: 20px;
+                gap: 25px;
+            }
+            
+            .tabs-column {
+                gap: 14px;
+            }
+            
             .tab {
-                padding: 12px 24px;
+                padding: 14px 20px;
                 font-size: 15px;
             }
         }
 
+        /* Mobile-specific adjustments */
         @media (max-width: 767px) {
             .tab {
-                padding: 8px 14px;
+                padding: 10px 14px;
                 font-size: 13px;
             }
-            .tabs-scroll {
-                justify-content: center;
+
+            .tabs-scroll-wrapper {
+                padding: 12px;
+                border-width: 1.5px;
+                gap: 10px;
+            }
+            
+            .tabs-column {
+                gap: 8px;
             }
         }
 
+        /* Small mobile devices */
         @media (max-width: 480px) {
-            .tab {
-                padding: 6px 12px;
-                font-size: 12px;
+            .tabs-scroll-wrapper {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                padding: 10px;
+                border-radius: 14px;
             }
-            .tabs-scroll {
-                gap: 5px;
+            
+            .tab {
+                padding: 8px 10px;
+                font-size: 12.5px;
+                border-radius: 10px;
+            }
+            
+            .tabs-column {
+                gap: 6px;
             }
         }
+
+
+
+
+
+
+
+
+
+
+
 
         :root {
             --bg: #0b0b0d;
@@ -137,6 +296,7 @@
             overflow-x: hidden;
         }
 
+        /* Background image layer */
         body::before {
             content: "";
             position: absolute;
@@ -171,6 +331,7 @@
             gap: var(--gap);
         }
 
+        /* Cafe Header - Original Style */
         .cafe-header {
             text-align: center;
             margin-bottom: 30px;
@@ -286,6 +447,7 @@
             border: 2px solid #c62828;
         }
 
+        /* Location Link Section - Added at bottom */
         .location-link-section {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
@@ -346,6 +508,7 @@
             height: 20px;
         }
 
+        /* Header and Navigation */
         .header {
             display: flex;
             flex-direction: column;
@@ -409,43 +572,7 @@
             width: 100%;
         }
 
-        .tabs-container {
-            position: relative;
-            margin-bottom: 10px;
-        }
-
-        .tabs-scroll {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding: 8px 0;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .tabs-scroll::-webkit-scrollbar {
-            display: none;
-        }
-
-        .tab {
-            padding: 10px 16px;
-            border-radius: 999px;
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            font-size: 14px;
-            color: var(--muted);
-            cursor: pointer;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .tab.active {
-            background: var(--accent);
-            color: #0b0b0d;
-            border: none;
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.12);
-        }
-
+        /* Menu Grid */
         .menu-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -543,6 +670,7 @@
             background: transparent;
         }
 
+        /* Add to Cart Button */
         .btn-primary {
             background: linear-gradient(90deg, var(--gold1), var(--gold2));
             border: none;
@@ -569,6 +697,7 @@
             transform: translateY(0) scale(0.95);
         }
 
+        /* Button Animation Effects */
         .btn-primary.adding {
             animation: addPulse 0.6s ease;
         }
@@ -583,10 +712,12 @@
                 transform: scale(1);
                 box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
             }
+
             50% {
                 transform: scale(1.05);
                 box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
             }
+
             100% {
                 transform: scale(1);
                 box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
@@ -598,59 +729,91 @@
                 transform: scale(1);
                 box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
             }
+
             25% {
                 transform: scale(1.08);
                 box-shadow: 0 8px 30px rgba(16, 185, 129, 0.4);
             }
+
             50% {
                 transform: scale(0.95);
                 box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
             }
+
             75% {
                 transform: scale(1.03);
                 box-shadow: 0 7px 25px rgba(16, 185, 129, 0.35);
             }
+
             100% {
                 transform: scale(1);
                 box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
             }
         }
 
+        /* Cart Styles - Bigger button with label */
         .cart-container {
             position: fixed;
             bottom: 20px;
             right: 20px;
             z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
         }
 
         .cart-button {
             background: linear-gradient(90deg, var(--gold1), var(--gold2));
-            width: 60px;
-            height: 60px;
+            width: 76px;
+            height: 76px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.12);
+            box-shadow: 0 8px 30px rgba(212, 175, 55, 0.25);
             cursor: pointer;
             position: relative;
             border: none;
+            transition: transform 0.2s ease;
+        }
+        .cart-button:hover {
+            transform: scale(1.05);
+        }
+        .cart-button svg {
+            width: 32px;
+            height: 32px;
+            stroke-width: 2.2;
+        }
+
+        .cart-label {
+            color: var(--gold2);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: rgba(11, 11, 13, 0.75);
+            padding: 4px 12px;
+            border-radius: 30px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         .cart-count {
             position: absolute;
-            top: -5px;
-            right: -5px;
+            top: -4px;
+            right: -4px;
             background: #e74c3c;
             color: white;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
+            border: 2px solid var(--bg);
         }
 
         .cart-modal {
@@ -800,6 +963,7 @@
             margin-top: 16px;
         }
 
+        /* Add Another Item Button */
         .btn-add-another {
             background: linear-gradient(90deg, rgba(212, 175, 55, 0.1), rgba(255, 204, 102, 0.1));
             border: 1px solid rgba(212, 175, 55, 0.3);
@@ -853,6 +1017,7 @@
             font-size: 16px;
         }
 
+        /* Delivery Options in Cart - only Restaurant kept */
         .delivery-options {
             margin: 20px 0;
             padding: 20px;
@@ -876,50 +1041,10 @@
             height: 20px;
         }
 
-        .delivery-option-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .option-btn {
-            flex: 1;
-            padding: 12px;
-            border-radius: 8px;
-            background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.08);
-            color: var(--muted);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .option-btn:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .option-btn.active {
-            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1), rgba(255, 204, 102, 0.1));
-            border-color: var(--gold1);
-            color: var(--gold2);
-        }
-
-        .option-btn svg {
-            width: 18px;
-            height: 18px;
-        }
-
+        /* Restaurant form only - highlight table number */
         .delivery-form {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .delivery-form.active {
             display: block;
+            animation: fadeIn 0.5s ease;
         }
 
         @keyframes fadeIn {
@@ -927,6 +1052,7 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -966,6 +1092,18 @@
             color: rgba(255, 255, 255, 0.3);
         }
 
+        /* Highlight table number input */
+        #tableNumber {
+            border: 2px solid var(--gold1);
+            background: rgba(212, 175, 55, 0.08);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+        }
+        #tableNumber:focus {
+            border-color: var(--gold2);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Customer Details Summary */
         .customer-details-summary {
             background: rgba(255, 255, 255, 0.02);
             border-radius: 8px;
@@ -1004,6 +1142,7 @@
             margin-bottom: 5px;
         }
 
+        /* Footer */
         .footer {
             text-align: center;
             padding: 20px 0;
@@ -1013,6 +1152,7 @@
             margin-top: 20px;
         }
 
+        /* Gold Line */
         .gold-line {
             height: 3px;
             border-radius: 999px;
@@ -1021,35 +1161,43 @@
             margin: 8px 0 16px 0;
         }
 
+        /* Tablet and Desktop Styles */
         @media (min-width: 768px) {
             body {
                 padding: 24px;
             }
+
             .container {
                 display: grid;
                 grid-template-columns: 1fr;
                 gap: 24px;
                 align-items: start;
             }
+
             .header {
                 grid-column: 1 / -1;
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
             }
+
             .brand {
                 flex: 1;
             }
+
             .search-container {
                 width: auto;
                 min-width: 300px;
             }
+
             .tabs-container {
                 grid-column: 1 / -1;
             }
+
             .menu-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
             .cart-actions {
                 flex-direction: row;
             }
@@ -1061,14 +1209,16 @@
             }
         }
 
+        /* Print Styles */
         @media print {
             body {
                 background: white;
                 color: black;
             }
+
             .cart-container,
             .cart-modal,
-            .btn-ghost { 
+            .btn-ghost {
                 display: none;
             }
         }
@@ -1076,36 +1226,40 @@
 </head>
 
 <body>
+    
     <div class="container">
+        <!-- Cafe Header - Original Style -->
         <div class="cafe-header">
-            <img src="logo.png" alt="Logo" style="width:400px; height:auto; display:block; margin:0 auto;"><br>
-            <div class="cafe-name">  HARY'N LAV</div>
+            <img src="logo.png" alt="Logo" style="width:400px; height:auto; display:block; margin:0 auto;">
+            <div class="cafe-name">HARY'N LAV</div>
             <div class="cafe-subtitle">BEACHSIDE BAR & RESTAURANT</div>
             <div class="location-info">
                 <div class="location-text"></div>
                 <div class="address"></div>
-                <div class="location-text"><h2></h2></div>
-                <div class="cafe-subtitle"></div>
-                <div class="cafe-subtitle"></div>
-                <div class="mobile-numbers"><br>Mo no.+91 99042 29973</div>
+                <div class="mobile-numbers">Mo no.+91 99042 29973</div>
             </div>
             <div class="veg-nonveg">
                 <div class="veg">
                     <span class="symbol"></span>
-                    <span>VEG</span>
+                    <span>Veg</span>
                 </div>
-              <div class="nonveg">
+                <div class="nonveg">
                     <span class="symbol"></span>
-                    <span>NON VEG</span>
+                    <span>Non-Veg</span>
                 </div>
             </div>
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-        <div style="display:flex; justify-content:center; gap:25px; margin-top:30px; flex-wrap:wrap;">
+                                             <br>   <div class="mobile-numbers">10% Extra Applicable on AC and Hotel Rooms</div>
         </div>
 
-        <main class="menu">
+        <!-- Section Buttons - Liquor & Food -->
+        <div class="section-buttons">
+            <button class="section-btn liquor-btn" id="liquorSectionBtn">🍸 Liquor</button>
+            <button class="section-btn food-btn" id="foodSectionBtn">🍽️ Food</button>
+        </div>
+
+        <!-- Main Menu - Hidden by Default -->
+        <main class="menu" id="mainMenu">
             <div class="menu-head">
                 <div class="controls">
                     <div class="search" role="search">
@@ -1118,51 +1272,8 @@
                         <input id="search" placeholder="Search dishes, ingredients..." />
                     </div>
 
-                    <div class="tabs-scroll">
-<button class="tab active" data-cat="all">🍽️ All Items</button>
-<button class="tab" data-cat="MOCKTAILS">🍹 Mocktails</button>
-<button class="tab" data-cat="COCKTAILS">🍸 Cocktails</button>
-<button class="tab" data-cat="BEER">🍺 Beer</button>
-<button class="tab" data-cat="SCOTCH">🥃 Scotch</button>
-<button class="tab" data-cat="WHISKEY">🥃 Whiskey</button>
-<button class="tab" data-cat="VODKA">🍸 Vodka</button>
-<button class="tab" data-cat="RUM">🥃 Rum</button>
-<button class="tab" data-cat="TEQUILA">🧂 Tequila</button>
-<button class="tab" data-cat="BRANDY">🍷 Brandy</button>
-<button class="tab" data-cat="WINE & CHAMPAGNE">🍾 Wine & Champagne</button>
-<button class="tab" data-cat="NON-ALCOHOLIC BAR">🥤 Non-Alcoholic Bar</button>
-<button class="tab" data-cat="SNACKS">🍟 Snacks</button>
-<button class="tab" data-cat="SOUPS">🥣 Soups</button>
-<button class="tab" data-cat="VEG STARTERS">🥬 Veg Starters</button>
-<button class="tab" data-cat="NON-VEG STARTERS">🍗 Non-Veg Starters</button>
-<button class="tab" data-cat="TANDOORI STARTERS - VEGETARIAN">🍢 Tandoori Veg Starters</button>
-<button class="tab" data-cat="TANDOORI STARTERS - NON-VEGETARIAN">🍢 Tandoori Non-Veg Starters</button>
-<button class="tab" data-cat="CHINESE STARTERS & APPETIZERS - VEGETARIAN">🥢 Chinese Veg Starters</button>
-<button class="tab" data-cat="CHINESE STARTERS & APPETIZERS - NON-VEGETARIAN">🥢 Chinese Non-Veg Starters</button>
-<button class="tab" data-cat="KOLIWADA">🍤 Koliwada</button>
-<button class="tab" data-cat="SIZZLER & BULLET">🔥 Sizzler & Bullet</button>
-<button class="tab" data-cat="GRAND SIZZLERS & FEAST PLATTERS">🍱 Grand Sizzlers & Platters</button>
-<button class="tab" data-cat="PLATTERS">🍽️ Platters</button>
-<button class="tab" data-cat="PIZZA">🍕 Pizza</button>
-<button class="tab" data-cat="CONTINENTAL & GLOBAL SPECIALTIES">🌮 Continental & Global Specialties</button>
-<button class="tab" data-cat="EGG PREPARATION">🍳 Egg Preparation</button>
-<button class="tab" data-cat="MAIN COURSE - VEG">🍛 Veg Main Course</button>
-<button class="tab" data-cat="REGIONAL HERITAGE & GRAVY MAINS - VEG">🍲 Regional Heritage Veg Mains</button>
-<button class="tab" data-cat="MAIN COURSE - NON-VEG">🍗 Non-Veg Main Course</button>
-<button class="tab" data-cat="REGIONAL HERITAGE & GRAVY MAINS - NON-VEG">🍲 Regional Heritage Non-Veg Mains</button>
-<button class="tab" data-cat="REGIONAL DISHES">🥘 Regional Dishes</button>
-<button class="tab" data-cat="ROTIS">🫓 Rotis & Breads</button>
-<button class="tab" data-cat="DAL PREPARATION">🥣 Dal Preparation</button>
-<button class="tab" data-cat="INDIAN RICE VEG">🍚 Indian Rice Veg</button>
-<button class="tab" data-cat="RICE & NOODLES">🍜 Rice & Noodles</button>
-<button class="tab" data-cat="SPECIALTY & CONTINENTAL RICE">🥘 Specialty & Continental Rice</button>
-<button class="tab" data-cat="BIRYANI">🍲 Biryani</button>
-<button class="tab" data-cat="SIGNATURE DUM BIRYANIS">👑 Signature Dum Biryanis</button>
-<button class="tab" data-cat="RAITHA">🥣 Raitha</button>
-<button class="tab" data-cat="HOUSE OF SALAD">🥗 House of Salad</button>
-<button class="tab" data-cat="SALADS & FRESH STARTERS - VEGETARIAN">🥗 Veg Salads & Fresh Starters</button>
-<button class="tab" data-cat="SALADS & FRESH STARTERS - NON-VEGETARIAN">🥗 Non-Veg Salads & Fresh Starters</button>
-<button class="tab" data-cat="DESSERT">🍨 Desserts</button>
+                    <div class="tabs-scroll-wrapper" id="tabsWrapper">
+                        <!-- Tabs will be dynamically populated by JavaScript -->
                     </div>
                 </div>
             </div>
@@ -1172,6 +1283,7 @@
             </section>
         </main>
 
+        <!-- Location Link Section - Added at bottom -->
         <div class="location-link-section">
             <div class="location-link-header">
                 <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1181,7 +1293,7 @@
                 <h3>Find Us on Google Maps</h3>
             </div>
             <div class="map-link-container">
-                <a href="https://maps.app.goo.gl/eoAFLcA917VsB71c6" target="_blank" class="map-link">
+                <a href="https://maps.app.goo.gl/ReshV5WWJgu3WNt27" target="_blank" class="map-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path>
                         <circle cx="12" cy="10" r="3"></circle>
@@ -1192,17 +1304,20 @@
         </div>
     </div>
 
+    <!-- Cart Button - Bigger with label -->
     <div class="cart-container">
         <button class="cart-button" id="cartButton">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                 <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
                 <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
             <span class="cart-count" id="cartCount">0</span>
         </button>
+        <span class="cart-label">🛒 Cart</span>
     </div>
 
+    <!-- Cart Modal -->
     <div class="cart-modal" id="cartModal">
         <div class="cart-content">
             <div class="cart-header">
@@ -1210,57 +1325,33 @@
                 <button class="close-cart" id="closeCart">&times;</button>
             </div>
 
+            <!-- Delivery Options - Only Restaurant kept -->
             <div class="delivery-options">
                 <h4 class="options-title">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        <path
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
-                    Select Delivery Type
+                    Restaurant Order
                 </h4>
 
-                <div class="delivery-option-buttons">
-                    <button class="option-btn active" id="restaurantOption" onclick="selectDeliveryOption('restaurant')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M9 12v12M15 12v12M5 12l-2 9h18l-2-9M5 12V8c0-1.105.895-2 2-2h10c1.105 0 2 .895 2 2v4" />
-                            <circle cx="12" cy="6" r="2" />
-                        </svg>
-                        Restaurant
-                    </button>
-                    <button class="option-btn" id="homeDeliveryOption" onclick="selectDeliveryOption('home')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        Home Delivery
-                    </button>
-                </div>
-
+                <!-- Restaurant Form -->
                 <div class="delivery-form active" id="restaurantForm">
                     <div class="form-group">
                         <label class="form-label" for="tableNumber">Table Number</label>
-                        <input type="text" id="tableNumber" class="form-input" placeholder="Enter your table number (e.g., Table 5, Booth 2)" />
-                    </div>
-                </div>
-
-                <div class="delivery-form" id="homeDeliveryForm">
-                    <div class="form-group">
-                        <label class="form-label" for="customerName">Full Name</label>
-                        <input type="text" id="customerName" class="form-input" placeholder="Enter your full name" />
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="customerMobile">Mobile Number</label>
-                        <input type="tel" id="customerMobile" class="form-input" placeholder="Enter your mobile number" />
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="customerAddress">Delivery Address</label>
-                        <textarea id="customerAddress" class="form-input" placeholder="Enter your complete address" rows="3"></textarea>
+                        <input type="text" id="tableNumber" class="form-input"
+                            placeholder="Enter your table number (e.g., Table 5, Booth 2)" />
                     </div>
                 </div>
             </div>
 
+            <!-- Customer Details Summary -->
             <div class="customer-details-summary" id="customerDetailsSummary">
+                <!-- Will be populated by JavaScript -->
             </div>
 
             <div class="cart-items" id="cartItems">
+                <!-- Cart items will be inserted here -->
                 <div class="cart-empty" id="cartEmpty">Your cart is empty</div>
             </div>
 
@@ -1279,7 +1370,8 @@
                 <button class="btn-clear" id="clearCart">Clear Cart</button>
                 <button class="btn-whatsapp" id="whatsappOrder">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.864 3.488" />
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.864 3.488" />
                     </svg>
                     Order via WhatsApp
                 </button>
@@ -1289,10 +1381,9 @@
 
     <script>
         // Menu Data
-        const data = [ 
+        const data =[
 
-
-{ "id": 1, "cat": "MOCKTAILS", "name": "Cindrella", "price": "249 RS", "desc": "Orange Juice + Pineapple Juice + Lime Juice + Sugar Syrup", "tags": ["Veg"], "img": "img/cindrella.jpeg" },
+  { "id": 1, "cat": "MOCKTAILS", "name": "Cindrella", "price": "249 RS", "desc": "Orange Juice + Pineapple Juice + Lime Juice + Sugar Syrup", "tags": ["Veg"], "img": "img/cindrella.jpeg" },
   { "id": 2, "cat": "MOCKTAILS", "name": "Flying Monkey", "price": "249 RS", "desc": "Khus Syrup + Black Currant Syrup Muddle Mint + Soda + 7up", "tags": ["Veg"], "img": "img/flying_monkey.jpeg" },
   { "id": 3, "cat": "MOCKTAILS", "name": "Black Beauty", "price": "249 RS", "desc": "Black Currant Syrup + Fresh Cream", "tags": ["Veg"], "img": "img/black_beauty.jpeg" },
   { "id": 4, "cat": "MOCKTAILS", "name": "Virgin Colada", "price": "249 RS", "desc": "Pineapple Juice + Coconut Milk + Fresh Cream", "tags": ["Veg"], "img": "img/virgin_colada.jpeg" },
@@ -1498,6 +1589,10 @@
   { "id": 194, "cat": "NON-ALCOHOLIC BAR", "name": "Canned Juice (Glass)", "price": "99 RS", "desc": "Assorted fruit canned juice", "tags": ["Veg"], "img": "img/canned_juice.jpeg" },
   { "id": 195, "cat": "NON-ALCOHOLIC BAR", "name": "Red Bull Energy Drink", "price": "350 RS", "desc": "Premium vitality energy drink", "tags": ["Veg"], "img": "img/redbull.jpeg" },
 
+
+
+
+            
   { "id": 196, "cat": "SNACKS", "name": "Peanut", "price": "95 RS", "desc": "Roasted salty peanuts", "tags": ["Veg"], "img": "img/boiled_palli.jpeg" },
   { "id": 197, "cat": "SNACKS", "name": "Peanut Chaat", "price": "150 RS", "desc": "Spiced tangy peanut salad chaat", "tags": ["Veg"], "img": "img/masala_palli.jpeg" },
   { "id": 198, "cat": "SNACKS", "name": "Channa Dal", "price": "90 RS", "desc": "Crunchy roasted chana dal", "tags": ["Veg"], "img": "img/channa_dal.jpeg" },
@@ -1856,13 +1951,16 @@
   { "id": 540, "cat": "CHINESE STARTERS & APPETIZERS - VEGETARIAN", "name": "Thread Starter - Paneer", "price": "399 RS", "desc": "Cottage cheese marinated in spices, wrapped in fine threads of spring roll pastry, and deep-fried to golden perfection", "tags": ["Veg"], "img": "img/thread_starter_paneer.jpeg" },
   { "id": 541, "cat": "CHINESE STARTERS & APPETIZERS - NON-VEGETARIAN", "name": "Thread Starter - Chicken", "price": "499 RS", "desc": "Chicken marinated in spices, wrapped in fine threads of spring roll pastry, and deep-fried to golden perfection", "tags": ["Non-Veg"], "img": "img/thread_starter_chicken.jpeg" },
   { "id": 542, "cat": "CHINESE STARTERS & APPETIZERS - NON-VEGETARIAN", "name": "Thread Starter - Prawns", "price": "720 RS", "desc": "Prawns marinated in spices, wrapped in fine threads of spring roll pastry, and deep-fried to golden perfection", "tags": ["Non-Veg"], "img": "img/thread_starter_prawns.jpeg" },     
-   
 
+        
+        
+        
         ];
-
         // Cart functionality
         let cart = [];
-        let deliveryType = 'restaurant';
+        let deliveryType = 'restaurant'; // Default to restaurant
+        let currentSection = 'food'; // Track current section (food or liquor)
+        
         const cartButton = document.getElementById('cartButton');
         const cartModal = document.getElementById('cartModal');
         const closeCart = document.getElementById('closeCart');
@@ -1874,69 +1972,184 @@
         const whatsappOrder = document.getElementById('whatsappOrder');
         const addAnotherItem = document.getElementById('addAnotherItem');
         const customerDetailsSummary = document.getElementById('customerDetailsSummary');
+        const mainMenu = document.getElementById('mainMenu');
+        const tabsWrapper = document.getElementById('tabsWrapper');
+        const liquorBtn = document.getElementById('liquorSectionBtn');
+        const foodBtn = document.getElementById('foodSectionBtn');
 
-        function extractPrice(priceStr) {
-            if (!priceStr || priceStr === 'Rs. NA') return 0;
-            const match = priceStr.match(/\d+/);
-            if (match) {
-                return parseInt(match[0], 10);
+        // Category definitions
+      const liquorCategories = [
+  "मॉकटेल्स / Mocktails",
+  "कॉकटेल्स / Cocktails",
+  "लिकर / Scotch Whisky",
+  "लिकर / Regular Whisky",
+  "लिकर / Tequila",
+  "लिकर / Brandy",
+  "लिकर / Rum",
+  "लिकर / Vodka",
+  "लिकर / Wine & Champagne",
+  "लिकर / Beer",
+  "बेव्हरेजेस / Non-Alcoholic Bar"
+];
+
+        const foodCategories = [
+  "SNACKS",
+  "PLATTERS",
+  "SOUPS",
+  "KOLIWADA",
+  "PIZZA",
+  "SIZZLER & BULLET",
+  "GRAND SIZZLERS & FEAST PLATTERS",
+  "EGG PREPARATION",
+  "VEG STARTERS",
+  "NON-VEG STARTERS",
+  "TANDOORI STARTERS - VEGETARIAN",
+  "TANDOORI STARTERS - NON-VEGETARIAN",
+  "CHINESE STARTERS & APPETIZERS - VEGETARIAN",
+  "CHINESE STARTERS & APPETIZERS - NON-VEGETARIAN",
+  "HOUSE OF SALAD",
+  "SALADS & FRESH STARTERS - VEGETARIAN",
+  "SALADS & FRESH STARTERS - NON-VEGETARIAN",
+  "RAITHA",
+  "MAIN COURSE - VEG",
+  "REGIONAL HERITAGE & GRAVY MAINS - VEG",
+  "MAIN COURSE - NON-VEG",
+  "REGIONAL HERITAGE & GRAVY MAINS - NON-VEG",
+  "REGIONAL DISHES",
+  "DAL PREPARATION",
+  "ROTIS",
+  "INDIAN RICE VEG",
+  "RICE & NOODLES",
+  "SPECIALTY & CONTINENTAL RICE",
+  "BIRYANI",
+  "SIGNATURE DUM BIRYANIS",
+  "CONTINENTAL & GLOBAL SPECIALTIES",
+  "DESSERT"
+];
+
+        // Function to render category tabs based on section
+        function renderCategoryTabs(section) {
+            let categories = [];
+            
+            if (section === 'liquor') {
+                categories = liquorCategories;
+            } else {
+                categories = foodCategories;
             }
-            return 0;
+
+            // Split categories into two columns
+            const midPoint = Math.ceil(categories.length / 2);
+            const leftColumn = categories.slice(0, midPoint);
+            const rightColumn = categories.slice(midPoint);
+
+            let leftColumnHTML = '<div class="tabs-column">';
+            leftColumnHTML += '<button class="tab active" data-cat="all">All Items</button>';
+            leftColumn.forEach(cat => {
+                leftColumnHTML += `<button class="tab" data-cat="${cat}">${cat}</button>`;
+            });
+            leftColumnHTML += '</div>';
+
+            let rightColumnHTML = '<div class="tabs-column">';
+            rightColumn.forEach(cat => {
+                rightColumnHTML += `<button class="tab" data-cat="${cat}">${cat}</button>`;
+            });
+            rightColumnHTML += '</div>';
+
+            tabsWrapper.innerHTML = leftColumnHTML + rightColumnHTML;
+
+            // Re-attach event listeners to tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    filterByCategory(tab.dataset.cat);
+                });
+            });
+
+            // Show all items of the current section
+            filterBySection(section);
         }
 
-        function selectDeliveryOption(type) {
-            deliveryType = type;
-            document.getElementById('restaurantOption').classList.toggle('active', type === 'restaurant');
-            document.getElementById('homeDeliveryOption').classList.toggle('active', type === 'home');
-            document.getElementById('restaurantForm').classList.toggle('active', type === 'restaurant');
-            document.getElementById('homeDeliveryForm').classList.toggle('active', type === 'home');
-            updateCustomerDetailsSummary();
+        // Filter by section (food or liquor)
+        function filterBySection(section) {
+            let filteredItems = [];
+            
+            if (section === 'liquor') {
+                filteredItems = data.filter(item => liquorCategories.includes(item.cat));
+            } else {
+                filteredItems = data.filter(item => foodCategories.includes(item.cat));
+            }
+            
+            renderMenuItems(filteredItems);
         }
 
+        // Filter by category within current section
+        function filterByCategory(category) {
+            let filteredItems = [];
+            
+            if (category === 'all') {
+                // Show all items in current section
+                if (currentSection === 'liquor') {
+                    filteredItems = data.filter(item => liquorCategories.includes(item.cat));
+                } else {
+                    filteredItems = data.filter(item => foodCategories.includes(item.cat));
+                }
+            } else {
+                filteredItems = data.filter(item => item.cat === category);
+            }
+            
+            renderMenuItems(filteredItems);
+        }
+
+        // Function to show menu
+        function showMenu() {
+            mainMenu.classList.add('visible');
+        }
+
+        // Function to hide menu
+        function hideMenu() {
+            mainMenu.classList.remove('visible');
+        }
+
+        // Section button event listeners
+        liquorBtn.addEventListener('click', () => {
+            liquorBtn.classList.add('active');
+            foodBtn.classList.remove('active');
+            currentSection = 'liquor';
+            renderCategoryTabs('liquor');
+            showMenu(); // Show menu when button is clicked
+        });
+
+        foodBtn.addEventListener('click', () => {
+            foodBtn.classList.add('active');
+            liquorBtn.classList.remove('active');
+            currentSection = 'food';
+            renderCategoryTabs('food');
+            showMenu(); // Show menu when button is clicked
+        });
+
+        // Update customer details summary (only restaurant now)
         function updateCustomerDetailsSummary() {
             let summaryHTML = '';
             let showSummary = false;
 
-            if (deliveryType === 'restaurant') {
-                const tableNumber = document.getElementById('tableNumber').value.trim();
-                if (tableNumber) {
-                    showSummary = true;
-                    summaryHTML = `
-                        <div class="summary-title">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 12v12M15 12v12M5 12l-2 9h18l-2-9M5 12V8c0-1.105.895-2 2-2h10c1.105 0 2 .895 2 2v4"/>
-                                <circle cx="12" cy="6" r="2"/>
-                            </svg>
-                            Restaurant Order
-                        </div>
-                        <div class="summary-details">
-                            <div><strong>Type:</strong> Dine-in</div>
-                            ${tableNumber ? `<div><strong>Table Number:</strong> ${tableNumber}</div>` : ''}
-                        </div>
-                    `;
-                }
-            } else {
-                const name = document.getElementById('customerName').value.trim();
-                const mobile = document.getElementById('customerMobile').value.trim();
-                const address = document.getElementById('customerAddress').value.trim();
+            const tableNumber = document.getElementById('tableNumber').value.trim();
 
-                if (name || mobile || address) {
-                    showSummary = true;
-                    summaryHTML = `
-                        <div class="summary-title">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                            </svg>
-                            Delivery Order
-                        </div>
-                        <div class="summary-details">
-                            <div><strong>Type:</strong> Home Delivery</div>
-                            ${name ? `<div><strong>Name:</strong> ${name}</div>` : ''}
-                            ${mobile ? `<div><strong>Mobile:</strong> ${mobile}</div>` : ''}
-                            ${address ? `<div><strong>Address:</strong> ${address}</div>` : ''}
-                        </div>
-                    `;
-                }
+            if (tableNumber) {
+                showSummary = true;
+                summaryHTML = `
+            <div class="summary-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12v12M15 12v12M5 12l-2 9h18l-2-9M5 12V8c0-1.105.895-2 2-2h10c1.105 0 2 .895 2 2v4"/>
+                <circle cx="12" cy="6" r="2"/>
+              </svg>
+              Restaurant Order
+            </div>
+            <div class="summary-details">
+              <div><strong>Type:</strong> Dine-in</div>
+              <div><strong>Table Number:</strong> ${tableNumber}</div>
+            </div>
+          `;
             }
 
             if (showSummary) {
@@ -1947,6 +2160,7 @@
             }
         }
 
+        // Toggle cart modal
         cartButton.addEventListener('click', () => {
             cartModal.classList.add('open');
             updateCustomerDetailsSummary();
@@ -1956,12 +2170,8 @@
             cartModal.classList.remove('open');
         });
 
+        // Add to cart function with animation
         function addToCart(item, button) {
-            const priceValue = extractPrice(item.price);
-            if (priceValue === 0 && item.price !== 'Rs. NA') {
-                // Still add but show price as 0
-            }
-
             const existingItem = cart.find(cartItem => cartItem.id === item.id);
 
             if (existingItem) {
@@ -1971,39 +2181,41 @@
                     id: item.id,
                     name: item.name,
                     price: item.price,
-                    priceValue: priceValue,
                     quantity: 1
                 });
             }
 
             updateCart();
 
-            if (button) {
-                button.classList.add('adding');
-                button.innerHTML = 'Adding...';
+            // Animation effect
+            button.classList.add('adding');
+            button.innerHTML = 'Adding...';
+
+            setTimeout(() => {
+                button.classList.remove('adding');
+                button.classList.add('added');
+                button.innerHTML = '✓ Added';
 
                 setTimeout(() => {
-                    button.classList.remove('adding');
-                    button.classList.add('added');
-                    button.innerHTML = '✓ Added';
-
-                    setTimeout(() => {
-                        button.classList.remove('added');
-                        button.innerHTML = 'Add to Cart';
-                    }, 1000);
-                }, 500);
-            }
+                    button.classList.remove('added');
+                    button.innerHTML = 'Add to Cart';
+                }, 1000);
+            }, 500);
         }
 
+        // Remove from cart function
         function removeFromCart(itemId) {
             cart = cart.filter(item => item.id !== itemId);
             updateCart();
         }
 
+        // Update quantity function
         function updateQuantity(itemId, change) {
             const item = cart.find(item => item.id === itemId);
+
             if (item) {
                 item.quantity += change;
+
                 if (item.quantity <= 0) {
                     removeFromCart(itemId);
                 } else {
@@ -2012,14 +2224,16 @@
             }
         }
 
+        // Update cart display
         function updateCart() {
+            // Update cart count
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCount.textContent = totalItems;
 
+            // Update cart items
             if (cart.length === 0) {
                 cartEmpty.style.display = 'block';
                 cartItems.innerHTML = '';
-                cartTotal.textContent = '₹0';
             } else {
                 cartEmpty.style.display = 'none';
 
@@ -2027,24 +2241,24 @@
                 let totalAmount = 0;
 
                 cart.forEach(item => {
-                    const priceVal = item.priceValue || extractPrice(item.price);
-                    const itemTotal = priceVal * item.quantity;
+                    const price = parseInt(item.price.replace('₹', '').replace(' RS', ''));
+                    const itemTotal = price * item.quantity;
                     totalAmount += itemTotal;
 
                     itemsHTML += `
-                        <div class="cart-item">
-                            <div class="item-info">
-                                <div class="item-name">${item.name}</div>
-                                <div class="item-price">${item.price}</div>
-                            </div>
-                            <div class="item-quantity">
-                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                                <span class="quantity">${item.quantity}</span>
-                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-                                <button class="remove-item" onclick="removeFromCart(${item.id})">×</button>
-                            </div>
-                        </div>
-                    `;
+            <div class="cart-item">
+              <div class="item-info">
+                <div class="item-name">${item.name}</div>
+                <div class="item-price">${item.price}</div>
+              </div>
+              <div class="item-quantity">
+                <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                <span class="quantity">${item.quantity}</span>
+                <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                <button class="remove-item" onclick="removeFromCart(${item.id})">×</button>
+              </div>
+            </div>
+          `;
                 });
 
                 cartItems.innerHTML = itemsHTML;
@@ -2052,43 +2266,44 @@
             }
         }
 
+        // Clear cart
         clearCart.addEventListener('click', () => {
             cart = [];
             updateCart();
         });
 
+        // Add another item button functionality
         addAnotherItem.addEventListener('click', () => {
             cartModal.classList.remove('open');
+            
+            // Scroll to top of menu
             window.scrollTo({
                 top: document.querySelector('.menu-head').offsetTop - 20,
                 behavior: 'smooth'
             });
+            
+            // Focus on search to help user find items
+            setTimeout(() => {
+                document.getElementById('search').focus();
+            }, 500);
         });
 
+        // WhatsApp order function with customer details
         whatsappOrder.addEventListener('click', () => {
             if (cart.length === 0) {
                 alert('Your cart is empty!');
                 return;
             }
 
+            // Validate details based on delivery type
             let validationPassed = true;
             let validationMessage = '';
 
-            if (deliveryType === 'restaurant') {
-                const tableNumber = document.getElementById('tableNumber').value.trim();
-                if (!tableNumber) {
-                    validationPassed = false;
-                    validationMessage = 'Please enter your table number';
-                }
-            } else {
-                const customerName = document.getElementById('customerName').value.trim();
-                const customerMobile = document.getElementById('customerMobile').value.trim();
-                const customerAddress = document.getElementById('customerAddress').value.trim();
+            const tableNumber = document.getElementById('tableNumber').value.trim();
 
-                if (!customerName || !customerMobile || !customerAddress) {
-                    validationPassed = false;
-                    validationMessage = 'Please fill in all delivery details (Name, Mobile, Address)';
-                }
+            if (!tableNumber) {
+                validationPassed = false;
+                validationMessage = 'Please enter your table number';
             }
 
             if (!validationPassed) {
@@ -2098,44 +2313,38 @@
 
             let message = `Hello! I would like to place an order:\n\n`;
 
-            if (deliveryType === 'restaurant') {
-                const tableNumber = document.getElementById('tableNumber').value.trim();
-                message += `**Delivery Type:** Dine-in\n`;
-                message += `**Table Number:** ${tableNumber}\n\n`;
-            } else {
-                const customerName = document.getElementById('customerName').value.trim();
-                const customerMobile = document.getElementById('customerMobile').value.trim();
-                const customerAddress = document.getElementById('customerAddress').value.trim();
+            // Add delivery details
+            message += `*Delivery Type:* Dine-in\n`;
+            message += `*Table Number:* ${tableNumber}\n\n`;
 
-                message += `**Delivery Type:** Home Delivery\n`;
-                message += `**Name:** ${customerName}\n`;
-                message += `**Mobile:** ${customerMobile}\n`;
-                message += `**Address:** ${customerAddress}\n\n`;
-            }
-
-            message += `**Order Details:**\n`;
+            message += `*Order Details:*\n`;
 
             cart.forEach(item => {
                 message += `• ${item.name} - ${item.quantity} x ${item.price}\n`;
             });
 
             const totalAmount = cart.reduce((sum, item) => {
-                const priceVal = item.priceValue || extractPrice(item.price);
-                return sum + (priceVal * item.quantity);
+                const price = parseInt(item.price.replace('₹', '').replace(' RS', ''));
+                return sum + (price * item.quantity);
             }, 0);
 
-            message += `\n**Total Amount:** ₹${totalAmount}\n\n`;
+            message += `\n*Total Amount:* ₹${totalAmount}\n\n`;
             message += `Thank you!`;
 
+            // Encode the message for WhatsApp URL
             const encodedMessage = encodeURIComponent(message);
-const whatsappURL = `https://wa.me/919904229973?text=${encodedMessage}`;
+            const whatsappURL = `https://wa.me/919904229973?text=${encodedMessage}`;
+
+            // Open WhatsApp in a new tab
             window.open(whatsappURL, '_blank');
 
+            // Close cart modal after order
             setTimeout(() => {
                 cartModal.classList.remove('open');
             }, 1000);
         });
 
+        // Render menu items
         function renderMenuItems(items) {
             const menuGrid = document.getElementById('menuGrid');
 
@@ -2145,72 +2354,67 @@ const whatsappURL = `https://wa.me/919904229973?text=${encodedMessage}`;
             }
 
             menuGrid.innerHTML = items.map(item => `
-                <div class="card" data-cat="${item.cat}">
-                    <div class="card-header">
-                        <div class="thumb">
-                            <img src="${item.img}" alt="${item.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiBmaWxsPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMDMpIi8+CjxwYXRoIGQ9Ik03MCA4MEgxMTBNODAgNzBIOTBNNjUgOTVIMTA1TTk1IDY1VjEwNU02NSA2NVYxMDVNNzUgNzVIOThNNzUgODVIOThNNzUgOTVIOThNNzUgMTA1SDk4TTY1IDc1SDcyTTY1IDg1SDcyTTY1IDk1SDcyTTY1IDEwNUg3Mk0xMDggNzVIMTE1TTEwOCA4NUgxMTVNMTA4IDk1SDExNU0xMDggMTA1SDExNSIgc3Ryb2tlPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMSkiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+'">
-                        </div>
-                        <div class="card-info">
-                            <h3 class="dish">${item.name}</h3>
-                            <p class="desc">${item.desc}</p>
-                            <div class="tags">
-                                ${item.tags.map(tag => `<span class="pill">${tag}</span>`).join('')}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="price">${item.price}</div>
-                        <button class="btn-primary" onclick="addToCart({id:${item.id}, name:'${item.name.replace(/'/g, "\\'")}', price:'${item.price}', priceValue:${extractPrice(item.price)}}, this)">Add to Cart</button>
-                    </div>
-                </div>
-            `).join('');
+        <div class="card" data-cat="${item.cat}">
+          <div class="card-header">
+            <div class="thumb">
+              <img src="${item.img}" alt="${item.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxODAiIGhlaWdodD0iMTgwIiBmaWxsPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMDMpIi8+CjxwYXRoIGQ9Ik03MCA4MEgxMTBNODAgNzBWOTBNNjUgOTVIMTA1TTk1IDY1VjEwNU02NSA2NVYxMDVNNzUgNzVIOThNNzUgODVIOThNNzUgOTVIOThNNzUgMTA1SDk4TTY1IDc1SDcyTTY1IDg1SDcyTTY1IDk1SDcyTTY1IDEwNUg3Mk0xMDggNzVIMTE1TTEwOCA4NUgxMTVNMTA4IDk1SDExNU0xMDggMTA1SDExNSIgc3Ryb2tlPSJyZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMSkiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+'">
+            </div>
+            <div class="card-info">
+              <h3 class="dish">${item.name}</h3>
+              <p class="desc">${item.desc}</p>
+              <div class="tags">
+                ${item.tags.map(tag => `<span class="pill">${tag}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="price">${item.price}</div>
+            <button class="btn-primary" onclick="addToCart(${JSON.stringify(item).replace(/"/g, '&quot;')}, this)">Add to Cart</button>
+          </div>
+        </div>
+      `).join('');
         }
 
-        function filterByCategory(category) {
-            if (category === 'all') {
-                renderMenuItems(data);
-            } else {
-                const filteredItems = data.filter(item => item.cat === category);
-                renderMenuItems(filteredItems);
-            }
-        }
-
+        // Search functionality
         function searchItems(query) {
-            const filteredItems = data.filter(item =>
+            // Determine which items to search based on current section
+            let itemsToSearch = [];
+            
+            if (currentSection === 'liquor') {
+                itemsToSearch = data.filter(item => liquorCategories.includes(item.cat));
+            } else {
+                itemsToSearch = data.filter(item => foodCategories.includes(item.cat));
+            }
+            
+            const filteredItems = itemsToSearch.filter(item =>
                 item.name.toLowerCase().includes(query.toLowerCase()) ||
                 item.desc.toLowerCase().includes(query.toLowerCase()) ||
                 item.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
             );
+            
             renderMenuItems(filteredItems);
         }
 
+        // Initialize the page
         document.addEventListener('DOMContentLoaded', () => {
-            selectDeliveryOption('restaurant');
-            renderMenuItems(data);
+            // Menu is hidden by default (no .visible class)
+            // We don't initialize any section or render any items until button click
 
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    filterByCategory(tab.dataset.cat);
-                });
-            });
-
+            // Search functionality - but search is disabled until menu is visible
             document.getElementById('search').addEventListener('input', (e) => {
-                searchItems(e.target.value);
+                if (mainMenu.classList.contains('visible')) {
+                    searchItems(e.target.value);
+                }
             });
 
+            // Update details summary when form inputs change
             document.getElementById('tableNumber').addEventListener('input', updateCustomerDetailsSummary);
-            document.getElementById('customerName').addEventListener('input', updateCustomerDetailsSummary);
-            document.getElementById('customerMobile').addEventListener('input', updateCustomerDetailsSummary);
-            document.getElementById('customerAddress').addEventListener('input', updateCustomerDetailsSummary);
         });
 
+        // Make functions available globally
         window.addToCart = addToCart;
         window.removeFromCart = removeFromCart;
         window.updateQuantity = updateQuantity;
-        window.selectDeliveryOption = selectDeliveryOption;
-        window.extractPrice = extractPrice;
     </script>
 </body>
 
